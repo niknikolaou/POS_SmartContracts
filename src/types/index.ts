@@ -44,6 +44,8 @@ export type { Lock } from "./contracts/Lock";
 export { Lock__factory } from "./factories/contracts/Lock__factory";
 export type { MyToken } from "./contracts/Oxygen.sol/MyToken";
 export { MyToken__factory } from "./factories/contracts/Oxygen.sol/MyToken__factory";
+export type { Oxygen } from "./contracts/Oxygen.sol/Oxygen";
+export { Oxygen__factory } from "./factories/contracts/Oxygen.sol/Oxygen__factory";
 export type { POS } from "./contracts/POS";
 export { POS__factory } from "./factories/contracts/POS__factory";
 export type { POSFactory } from "./contracts/POSFactory";

@@ -89,6 +89,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyToken__factory>;
     getContractFactory(
+      name: "Oxygen",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Oxygen__factory>;
+    getContractFactory(
       name: "POS",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.POS__factory>;
@@ -192,6 +196,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MyToken>;
+    getContractAt(
+      name: "Oxygen",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Oxygen>;
     getContractAt(
       name: "POS",
       address: string,
