@@ -27,3 +27,9 @@ struct TokenProperies {
     string  BaseURI;
     uint256 TotalSupply;
 }
+
+struct Planet {
+    uint256 ID;
+    bool Active;
+    uint256 StakeNFT;
+}

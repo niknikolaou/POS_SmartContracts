@@ -31,9 +31,12 @@ import type {
 export interface POSInterface extends utils.Interface {
   functions: {
     "AcceptPayment(uint256)": FunctionFragment;
+    "AddPlanet(address,bool)": FunctionFragment;
     "GameCollection(uint8)": FunctionFragment;
     "GetAllowance()": FunctionFragment;
+    "GetTicket(address)": FunctionFragment;
     "GetpayableTokenBalance()": FunctionFragment;
+    "Planets(address)": FunctionFragment;
     "SetTokenPrice(uint8,uint256)": FunctionFragment;
     "SetTokenStatus(uint8,bool)": FunctionFragment;
     "SetTokensInCirculation(uint8,uint256)": FunctionFragment;
@@ -71,9 +74,12 @@ export interface POSInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "AcceptPayment"
+      | "AddPlanet"
       | "GameCollection"
       | "GetAllowance"
+      | "GetTicket"
       | "GetpayableTokenBalance"
+      | "Planets"
       | "SetTokenPrice"
       | "SetTokenStatus"
       | "SetTokensInCirculation"
@@ -113,6 +119,10 @@ export interface POSInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "AddPlanet",
+    values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "GameCollection",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -121,8 +131,16 @@ export interface POSInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "GetTicket",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "GetpayableTokenBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "Planets",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "SetTokenPrice",
@@ -259,6 +277,7 @@ export interface POSInterface extends utils.Interface {
     functionFragment: "AcceptPayment",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "AddPlanet", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "GameCollection",
     data: BytesLike
@@ -267,10 +286,12 @@ export interface POSInterface extends utils.Interface {
     functionFragment: "GetAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "GetTicket", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "GetpayableTokenBalance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "Planets", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "SetTokenPrice",
     data: BytesLike
@@ -486,6 +507,12 @@ export interface POS extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    AddPlanet(
+      planet: PromiseOrValue<string>,
+      active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     GameCollection(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -511,7 +538,23 @@ export interface POS extends BaseContract {
 
     GetAllowance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    GetTicket(
+      wolf: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     GetpayableTokenBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    Planets(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, boolean, BigNumber] & {
+        ID: BigNumber;
+        Active: boolean;
+        StakeNFT: BigNumber;
+      }
+    >;
 
     SetTokenPrice(
       _collection: PromiseOrValue<BigNumberish>,
@@ -680,6 +723,12 @@ export interface POS extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  AddPlanet(
+    planet: PromiseOrValue<string>,
+    active: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   GameCollection(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -697,7 +746,23 @@ export interface POS extends BaseContract {
 
   GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
 
+  GetTicket(
+    wolf: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  Planets(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, boolean, BigNumber] & {
+      ID: BigNumber;
+      Active: boolean;
+      StakeNFT: BigNumber;
+    }
+  >;
 
   SetTokenPrice(
     _collection: PromiseOrValue<BigNumberish>,
@@ -866,6 +931,12 @@ export interface POS extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    AddPlanet(
+      planet: PromiseOrValue<string>,
+      active: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     GameCollection(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -891,7 +962,23 @@ export interface POS extends BaseContract {
 
     GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    GetTicket(
+      wolf: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    Planets(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, boolean, BigNumber] & {
+        ID: BigNumber;
+        Active: boolean;
+        StakeNFT: BigNumber;
+      }
+    >;
 
     SetTokenPrice(
       _collection: PromiseOrValue<BigNumberish>,
@@ -1117,6 +1204,12 @@ export interface POS extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    AddPlanet(
+      planet: PromiseOrValue<string>,
+      active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     GameCollection(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1124,7 +1217,17 @@ export interface POS extends BaseContract {
 
     GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    GetTicket(
+      wolf: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    Planets(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     SetTokenPrice(
       _collection: PromiseOrValue<BigNumberish>,
@@ -1292,6 +1395,12 @@ export interface POS extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    AddPlanet(
+      planet: PromiseOrValue<string>,
+      active: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     GameCollection(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1299,7 +1408,17 @@ export interface POS extends BaseContract {
 
     GetAllowance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    GetTicket(
+      wolf: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     GetpayableTokenBalance(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    Planets(
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

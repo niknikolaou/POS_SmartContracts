@@ -42,6 +42,11 @@ contract POS is POSFactory {
                
     }
 
+        function GetTicket(address wolf) public{
+        require(Planets[msg.sender].Active == true);
+            _mint(wolf, 12, 1, "");
+        }
+
     function uri(uint256 _id) public view override returns (string memory) {
             require(exists(_id), "URI: nonexistent token");
             TokenProperies memory token = GameCollection[Collection.OTHER];

@@ -16,6 +16,7 @@ abstract contract POSFactory is  Ownable,Pausable,ContextMixin,IERC2981,ERC1155S
     string public name = "Path of Salvation P2E";
     string public baseExtension = ".json";
     IERC20 payableToken;
+    mapping(address => Planet) public Planets;
 
     //TOKENS
      mapping (Collection=> TokenProperies)  public GameCollection;
@@ -59,6 +60,11 @@ abstract contract POSFactory is  Ownable,Pausable,ContextMixin,IERC2981,ERC1155S
      TokenProperies storage token = GameCollection[_collection];
      token.TotalSupply = _totalSupply;
    }
+
+   function AddPlanet(address planet, bool active) public {
+
+            Planets[planet].Active = active;
+      }
 
    function setPaymentToken(address token) public onlyOwner {
         payableToken = IERC20(token);

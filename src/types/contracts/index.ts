@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as oxygenSol from "./Oxygen.sol";
 export type { oxygenSol };
+import type * as planetEarthSol from "./PlanetEarth.sol";
+export type { planetEarthSol };
 import type * as gameSol from "./game.sol";
 export type { gameSol };
 export type { Lock } from "./Lock";
