@@ -8,66 +8,81 @@ import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "./utils/ContextMixin.sol";
 import "./utils/EnumDeclaration.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-abstract contract POSFactory is  Ownable,Pausable,ContextMixin,IERC2981,ERC1155Supply,ERC1155Burnable
+abstract contract POSFactory is
+    Ownable,
+    Pausable,
+    ContextMixin,
+    IERC2981,
+    ERC1155Supply,
+    ERC1155Burnable
 {
-   //=======Variables============
+    //=======Variables============
+    IERC20 first_token = IERC20(0x0000000000000000000000000000000000000000);
     string public name = "Path of Salvation P2E";
     string public baseExtension = ".json";
-    IERC20 payableToken;
     mapping(address => Planet) public Planets;
 
     //TOKENS
-     mapping (Collection=> TokenProperies)  public GameCollection;
+    mapping(Collection => TokenProperies) public GameCollection;
 
-   //===============================
+    //===============================
     // ======== Royalties =========
     address public royaltyAddress;
     uint256 public royaltyPercent;
 
     //=============================
     //==OWNER======================
-    function pause() external onlyOwner
-    {
+    function pause() external onlyOwner {
         _pause();
     }
 
-    function unpause() external onlyOwner
-    {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
-        function setURI(Collection _collection,string memory _baseURI) external onlyOwner {
+    function setURI(Collection _collection, string memory _baseURI)
+        external
+        onlyOwner
+    {
         TokenProperies storage token = GameCollection[_collection];
         token.BaseURI = _baseURI;
     }
 
-   function SetTokenStatus(Collection _collection, bool _status) external onlyOwner
-   {
-     TokenProperies storage token = GameCollection[_collection];
-     token.Status = _status;
-   }
+    function SetTokenStatus(Collection _collection, bool _status)
+        external
+        onlyOwner
+    {
+        TokenProperies storage token = GameCollection[_collection];
+        token.Status = _status;
+    }
 
-   function SetTokenPrice(Collection _collection, uint256  _price) external onlyOwner
-   {
-     TokenProperies storage token = GameCollection[_collection];
-     token.Price = _price;
-   }
+    function SetTokenPrice(Collection _collection, uint256 _price)
+        external
+        onlyOwner
+    {
+        TokenProperies storage token = GameCollection[_collection];
+        token.Price = _price;
+    }
 
-      function SetTokensInCirculation(Collection _collection, uint256  _totalSupply) external onlyOwner
-   {
-     TokenProperies storage token = GameCollection[_collection];
-     token.TotalSupply = _totalSupply;
-   }
+    function SetTokensInCirculation(
+        Collection _collection,
+        uint256 _totalSupply
+    ) external onlyOwner {
+        TokenProperies storage token = GameCollection[_collection];
+        token.TotalSupply = _totalSupply;
+    }
 
-   function AddPlanet(address planet, bool active) public {
+    function AddPlanet(address planet, bool active) public {
+        Planets[planet].Active = active;
+    }
 
-            Planets[planet].Active = active;
-      }
-
-   function setPaymentToken(address token) public onlyOwner {
-        payableToken = IERC20(token);
+    function setPaymentToken(Collection _collection, address _token)
+        public
+        onlyOwner
+    {
+        TokenProperies storage token = GameCollection[_collection];
+        token.PayableToken = IERC20(_token);
     }
 
     function withdraw() public payable onlyOwner {
@@ -75,9 +90,15 @@ abstract contract POSFactory is  Ownable,Pausable,ContextMixin,IERC2981,ERC1155S
         require(os);
     }
 
-    function GetpayableTokenBalance() public onlyOwner view returns(uint256){
-       return payableToken.balanceOf(address(this));
-   }
+    function GetpayableTokenBalance(Collection _collection)
+        public
+        view
+        onlyOwner
+        returns (uint256)
+    {
+        TokenProperies storage token = GameCollection[_collection];
+        return token.PayableToken.balanceOf(address(this));
+    }
 
     //============ERC1155===========================
     function _beforeTokenTransfer(
@@ -91,19 +112,22 @@ abstract contract POSFactory is  Ownable,Pausable,ContextMixin,IERC2981,ERC1155S
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
 
-  
     //==============================================
     //===========Payable Functions==========================
-    
-    function AcceptPayment(uint256 _tokenamount) public returns(bool) 
-    { 
-       payableToken.transfer(address(this), _tokenamount);
-       return true;
-   }
 
-   function GetAllowance() public view returns(uint256){
-       return payableToken.allowance(msg.sender, address(this));
-   }
+    function AcceptPayment(Collection _collection)
+        public
+        returns (bool)
+    {
+        TokenProperies storage token = GameCollection[_collection];
+        token.PayableToken.transfer(address(this), token.Price);
+        return true;
+    }
+
+    function GetAllowance(Collection _collection) public view returns (uint256) {
+        TokenProperies storage token = GameCollection[_collection];
+        return token.PayableToken.allowance(msg.sender, address(this));
+    }
 
     //==============Royalities Functions===============
 

@@ -30,11 +30,11 @@ import type {
 
 export interface POSFactoryInterface extends utils.Interface {
   functions: {
-    "AcceptPayment(uint256)": FunctionFragment;
+    "AcceptPayment(uint8)": FunctionFragment;
     "AddPlanet(address,bool)": FunctionFragment;
     "GameCollection(uint8)": FunctionFragment;
-    "GetAllowance()": FunctionFragment;
-    "GetpayableTokenBalance()": FunctionFragment;
+    "GetAllowance(uint8)": FunctionFragment;
+    "GetpayableTokenBalance(uint8)": FunctionFragment;
     "Planets(address)": FunctionFragment;
     "SetTokenPrice(uint8,uint256)": FunctionFragment;
     "SetTokenStatus(uint8,bool)": FunctionFragment;
@@ -57,7 +57,7 @@ export interface POSFactoryInterface extends utils.Interface {
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setPaymentToken(address)": FunctionFragment;
+    "setPaymentToken(uint8,address)": FunctionFragment;
     "setRoyaltyPercentage(uint256)": FunctionFragment;
     "setRoyaltyReceiver(address)": FunctionFragment;
     "setURI(uint8,string)": FunctionFragment;
@@ -124,11 +124,11 @@ export interface POSFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "GetAllowance",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "GetpayableTokenBalance",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "Planets",
@@ -228,7 +228,7 @@ export interface POSFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setPaymentToken",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setRoyaltyPercentage",
@@ -489,7 +489,7 @@ export interface POSFactory extends BaseContract {
 
   functions: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -508,6 +508,7 @@ export interface POSFactory extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        string,
         boolean,
         string,
         BigNumber
@@ -516,15 +517,22 @@ export interface POSFactory extends BaseContract {
         Current: BigNumber;
         End: BigNumber;
         Price: BigNumber;
+        PayableToken: string;
         Status: boolean;
         BaseURI: string;
         TotalSupply: BigNumber;
       }
     >;
 
-    GetAllowance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -645,7 +653,8 @@ export interface POSFactory extends BaseContract {
     ): Promise<ContractTransaction>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -695,7 +704,7 @@ export interface POSFactory extends BaseContract {
   };
 
   AcceptPayment(
-    _tokenamount: PromiseOrValue<BigNumberish>,
+    _collection: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -709,20 +718,36 @@ export interface POSFactory extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber, boolean, string, BigNumber] & {
+    [
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string,
+      boolean,
+      string,
+      BigNumber
+    ] & {
       Start: BigNumber;
       Current: BigNumber;
       End: BigNumber;
       Price: BigNumber;
+      PayableToken: string;
       Status: boolean;
       BaseURI: string;
       TotalSupply: BigNumber;
     }
   >;
 
-  GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+  GetAllowance(
+    _collection: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-  GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+  GetpayableTokenBalance(
+    _collection: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   Planets(
     arg0: PromiseOrValue<string>,
@@ -843,7 +868,8 @@ export interface POSFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   setPaymentToken(
-    token: PromiseOrValue<string>,
+    _collection: PromiseOrValue<BigNumberish>,
+    _token: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -893,7 +919,7 @@ export interface POSFactory extends BaseContract {
 
   callStatic: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -912,6 +938,7 @@ export interface POSFactory extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        string,
         boolean,
         string,
         BigNumber
@@ -920,15 +947,22 @@ export interface POSFactory extends BaseContract {
         Current: BigNumber;
         End: BigNumber;
         Price: BigNumber;
+        PayableToken: string;
         Status: boolean;
         BaseURI: string;
         TotalSupply: BigNumber;
       }
     >;
 
-    GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -1045,7 +1079,8 @@ export interface POSFactory extends BaseContract {
     ): Promise<void>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1156,7 +1191,7 @@ export interface POSFactory extends BaseContract {
 
   estimateGas: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1171,9 +1206,15 @@ export interface POSFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -1286,7 +1327,8 @@ export interface POSFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1337,7 +1379,7 @@ export interface POSFactory extends BaseContract {
 
   populateTransaction: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1352,9 +1394,13 @@ export interface POSFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    GetAllowance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1469,7 +1515,8 @@ export interface POSFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -30,12 +30,12 @@ import type {
 
 export interface POSInterface extends utils.Interface {
   functions: {
-    "AcceptPayment(uint256)": FunctionFragment;
+    "AcceptPayment(uint8)": FunctionFragment;
     "AddPlanet(address,bool)": FunctionFragment;
     "GameCollection(uint8)": FunctionFragment;
-    "GetAllowance()": FunctionFragment;
+    "GetAllowance(uint8)": FunctionFragment;
     "GetTicket(address)": FunctionFragment;
-    "GetpayableTokenBalance()": FunctionFragment;
+    "GetpayableTokenBalance(uint8)": FunctionFragment;
     "Planets(address)": FunctionFragment;
     "SetTokenPrice(uint8,uint256)": FunctionFragment;
     "SetTokenStatus(uint8,bool)": FunctionFragment;
@@ -59,7 +59,7 @@ export interface POSInterface extends utils.Interface {
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setPaymentToken(address)": FunctionFragment;
+    "setPaymentToken(uint8,address)": FunctionFragment;
     "setRoyaltyPercentage(uint256)": FunctionFragment;
     "setRoyaltyReceiver(address)": FunctionFragment;
     "setURI(uint8,string)": FunctionFragment;
@@ -128,7 +128,7 @@ export interface POSInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "GetAllowance",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "GetTicket",
@@ -136,7 +136,7 @@ export interface POSInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "GetpayableTokenBalance",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "Planets",
@@ -240,7 +240,7 @@ export interface POSInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setPaymentToken",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setRoyaltyPercentage",
@@ -503,7 +503,7 @@ export interface POS extends BaseContract {
 
   functions: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -522,6 +522,7 @@ export interface POS extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        string,
         boolean,
         string,
         BigNumber
@@ -530,20 +531,27 @@ export interface POS extends BaseContract {
         Current: BigNumber;
         End: BigNumber;
         Price: BigNumber;
+        PayableToken: string;
         Status: boolean;
         BaseURI: string;
         TotalSupply: BigNumber;
       }
     >;
 
-    GetAllowance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -669,7 +677,8 @@ export interface POS extends BaseContract {
     ): Promise<ContractTransaction>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -719,7 +728,7 @@ export interface POS extends BaseContract {
   };
 
   AcceptPayment(
-    _tokenamount: PromiseOrValue<BigNumberish>,
+    _collection: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -733,25 +742,41 @@ export interface POS extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber, boolean, string, BigNumber] & {
+    [
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string,
+      boolean,
+      string,
+      BigNumber
+    ] & {
       Start: BigNumber;
       Current: BigNumber;
       End: BigNumber;
       Price: BigNumber;
+      PayableToken: string;
       Status: boolean;
       BaseURI: string;
       TotalSupply: BigNumber;
     }
   >;
 
-  GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+  GetAllowance(
+    _collection: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   GetTicket(
     wolf: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+  GetpayableTokenBalance(
+    _collection: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   Planets(
     arg0: PromiseOrValue<string>,
@@ -877,7 +902,8 @@ export interface POS extends BaseContract {
   ): Promise<ContractTransaction>;
 
   setPaymentToken(
-    token: PromiseOrValue<string>,
+    _collection: PromiseOrValue<BigNumberish>,
+    _token: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -927,7 +953,7 @@ export interface POS extends BaseContract {
 
   callStatic: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -946,6 +972,7 @@ export interface POS extends BaseContract {
         BigNumber,
         BigNumber,
         BigNumber,
+        string,
         boolean,
         string,
         BigNumber
@@ -954,20 +981,27 @@ export interface POS extends BaseContract {
         Current: BigNumber;
         End: BigNumber;
         Price: BigNumber;
+        PayableToken: string;
         Status: boolean;
         BaseURI: string;
         TotalSupply: BigNumber;
       }
     >;
 
-    GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -1089,7 +1123,8 @@ export interface POS extends BaseContract {
     ): Promise<void>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1200,7 +1235,7 @@ export interface POS extends BaseContract {
 
   estimateGas: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1215,14 +1250,20 @@ export interface POS extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    GetAllowance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    GetpayableTokenBalance(overrides?: CallOverrides): Promise<BigNumber>;
+    GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     Planets(
       arg0: PromiseOrValue<string>,
@@ -1340,7 +1381,8 @@ export interface POS extends BaseContract {
     ): Promise<BigNumber>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1391,7 +1433,7 @@ export interface POS extends BaseContract {
 
   populateTransaction: {
     AcceptPayment(
-      _tokenamount: PromiseOrValue<BigNumberish>,
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1406,7 +1448,10 @@ export interface POS extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    GetAllowance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    GetAllowance(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
@@ -1414,6 +1459,7 @@ export interface POS extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     GetpayableTokenBalance(
+      _collection: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1533,7 +1579,8 @@ export interface POS extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     setPaymentToken(
-      token: PromiseOrValue<string>,
+      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

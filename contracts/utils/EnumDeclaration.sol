@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 enum Collection {
     OXYGEN,
     RARE_WOLFS,
@@ -23,6 +25,7 @@ struct TokenProperies {
     uint256 Current;
     uint256 End;
     uint256 Price;
+    IERC20 PayableToken;
     bool Status;
     string  BaseURI;
     uint256 TotalSupply;
