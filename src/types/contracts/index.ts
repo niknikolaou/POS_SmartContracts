@@ -7,6 +7,7 @@ import type * as planetEarthSol from "./PlanetEarth.sol";
 export type { planetEarthSol };
 import type * as gameSol from "./game.sol";
 export type { gameSol };
+export type { ECommerce } from "./ECommerce";
 export type { Lock } from "./Lock";
 export type { POS } from "./POS";
 export type { POSFactory } from "./POSFactory";

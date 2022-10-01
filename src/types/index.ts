@@ -30,6 +30,8 @@ export type { ERC1155Receiver } from "./@openzeppelin/contracts/token/ERC1155/ut
 export { ERC1155Receiver__factory } from "./factories/@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver__factory";
 export type { ERC20 } from "./@openzeppelin/contracts/token/ERC20/ERC20";
 export { ERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/ERC20__factory";
+export type { IERC20Permit } from "./@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol/IERC20Permit";
+export { IERC20Permit__factory } from "./factories/@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol/IERC20Permit__factory";
 export type { IERC20Metadata } from "./@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 export { IERC20Metadata__factory } from "./factories/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata__factory";
 export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
@@ -38,6 +40,8 @@ export type { ERC165 } from "./@openzeppelin/contracts/utils/introspection/ERC16
 export { ERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/ERC165__factory";
 export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC165";
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
+export type { ECommerce } from "./contracts/ECommerce";
+export { ECommerce__factory } from "./factories/contracts/ECommerce__factory";
 export type { PathOfNicolas } from "./contracts/game.sol/PathOfNicolas";
 export { PathOfNicolas__factory } from "./factories/contracts/game.sol/PathOfNicolas__factory";
 export type { Lock } from "./contracts/Lock";

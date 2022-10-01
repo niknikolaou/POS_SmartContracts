@@ -30,10 +30,10 @@ import type {
 
 export interface POSInterface extends utils.Interface {
   functions: {
-    "AcceptPayment(uint8)": FunctionFragment;
     "AddPlanet(address,bool)": FunctionFragment;
     "GameCollection(uint8)": FunctionFragment;
-    "GetAllowance(uint8)": FunctionFragment;
+    "GetAllowance(address)": FunctionFragment;
+    "GetPayment(uint8)": FunctionFragment;
     "GetTicket(address)": FunctionFragment;
     "GetpayableTokenBalance(uint8)": FunctionFragment;
     "Planets(address)": FunctionFragment;
@@ -73,10 +73,10 @@ export interface POSInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "AcceptPayment"
       | "AddPlanet"
       | "GameCollection"
       | "GetAllowance"
+      | "GetPayment"
       | "GetTicket"
       | "GetpayableTokenBalance"
       | "Planets"
@@ -115,10 +115,6 @@ export interface POSInterface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "AcceptPayment",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "AddPlanet",
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
@@ -128,6 +124,10 @@ export interface POSInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "GetAllowance",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "GetPayment",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -273,10 +273,6 @@ export interface POSInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "AcceptPayment",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "AddPlanet", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "GameCollection",
@@ -286,6 +282,7 @@ export interface POSInterface extends utils.Interface {
     functionFragment: "GetAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "GetPayment", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "GetTicket", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "GetpayableTokenBalance",
@@ -502,11 +499,6 @@ export interface POS extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    AcceptPayment(
-      _collection: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     AddPlanet(
       planet: PromiseOrValue<string>,
       active: PromiseOrValue<boolean>,
@@ -539,9 +531,14 @@ export interface POS extends BaseContract {
     >;
 
     GetAllowance(
-      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    GetPayment(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
@@ -727,11 +724,6 @@ export interface POS extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  AcceptPayment(
-    _collection: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   AddPlanet(
     planet: PromiseOrValue<string>,
     active: PromiseOrValue<boolean>,
@@ -764,9 +756,14 @@ export interface POS extends BaseContract {
   >;
 
   GetAllowance(
-    _collection: PromiseOrValue<BigNumberish>,
+    _token: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  GetPayment(
+    _collection: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   GetTicket(
     wolf: PromiseOrValue<string>,
@@ -952,11 +949,6 @@ export interface POS extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    AcceptPayment(
-      _collection: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     AddPlanet(
       planet: PromiseOrValue<string>,
       active: PromiseOrValue<boolean>,
@@ -989,9 +981,14 @@ export interface POS extends BaseContract {
     >;
 
     GetAllowance(
-      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    GetPayment(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     GetTicket(
       wolf: PromiseOrValue<string>,
@@ -1234,11 +1231,6 @@ export interface POS extends BaseContract {
   };
 
   estimateGas: {
-    AcceptPayment(
-      _collection: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     AddPlanet(
       planet: PromiseOrValue<string>,
       active: PromiseOrValue<boolean>,
@@ -1251,8 +1243,13 @@ export interface POS extends BaseContract {
     ): Promise<BigNumber>;
 
     GetAllowance(
-      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    GetPayment(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     GetTicket(
@@ -1432,11 +1429,6 @@ export interface POS extends BaseContract {
   };
 
   populateTransaction: {
-    AcceptPayment(
-      _collection: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     AddPlanet(
       planet: PromiseOrValue<string>,
       active: PromiseOrValue<boolean>,
@@ -1449,8 +1441,13 @@ export interface POS extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     GetAllowance(
-      _collection: PromiseOrValue<BigNumberish>,
+      _token: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    GetPayment(
+      _collection: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     GetTicket(

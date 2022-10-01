@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./utils/ContextMixin.sol";
 import "./utils/EnumDeclaration.sol";
 
@@ -18,6 +20,7 @@ abstract contract POSFactory is
     ERC1155Burnable
 {
     //=======Variables============
+    using SafeERC20 for IERC20;
     IERC20 first_token = IERC20(0x0000000000000000000000000000000000000000);
     string public name = "Path of Salvation P2E";
     string public baseExtension = ".json";
@@ -115,18 +118,18 @@ abstract contract POSFactory is
     //==============================================
     //===========Payable Functions==========================
 
-    function AcceptPayment(Collection _collection)
+    function GetPayment(Collection _collection)
         public
         returns (bool)
     {
         TokenProperies storage token = GameCollection[_collection];
-        token.PayableToken.transfer(address(this), token.Price);
+        token.PayableToken.safeTransferFrom(msg.sender, address(this), token.Price);
         return true;
     }
 
-    function GetAllowance(Collection _collection) public view returns (uint256) {
-        TokenProperies storage token = GameCollection[_collection];
-        return token.PayableToken.allowance(msg.sender, address(this));
+    function GetAllowance(IERC20 _token) public view returns (uint256) {
+         
+        return _token.allowance(msg.sender, address(this));
     }
 
     //==============Royalities Functions===============

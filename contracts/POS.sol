@@ -31,10 +31,9 @@ contract POS is POSFactory {
             TokenProperies storage token = GameCollection[_collection];
             require(token.Status == true,"token is not enable");
             require(token.Current <= token.End, "All tokens are minted");
-           // require(msg.value == token.Price, "Wrong Price");
            // require(msg.sender == tx.origin, "Smart contracts cant Mint");
-           require(token.Price > GetAllowance(_collection), "Please approve tokens before transferring");
-           if( AcceptPayment(_collection)){
+           require(token.Price <= GetAllowance(token.PayableToken), "Please approve tokens before transferring");
+           if(GetPayment(_collection)){
              _mint(msg.sender, token.Current, token.TotalSupply, "");
         unchecked {
             token.Current++;
