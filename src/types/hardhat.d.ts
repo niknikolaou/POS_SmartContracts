@@ -65,6 +65,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Permit__factory>;
     getContractFactory(
+      name: "ERC20Burnable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Burnable__factory>;
+    getContractFactory(
       name: "IERC20Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Metadata__factory>;
@@ -116,6 +120,14 @@ declare module "hardhat/types/runtime" {
       name: "POSFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.POSFactory__factory>;
+    getContractFactory(
+      name: "TESToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TESToken__factory>;
+    getContractFactory(
+      name: "TESToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TESToken__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -183,6 +195,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Permit>;
     getContractAt(
+      name: "ERC20Burnable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Burnable>;
+    getContractAt(
       name: "IERC20Metadata",
       address: string,
       signer?: ethers.Signer
@@ -247,6 +264,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.POSFactory>;
+    getContractAt(
+      name: "TESToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TESToken>;
+    getContractAt(
+      name: "TESToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TESToken>;
 
     // default types
     getContractFactory(

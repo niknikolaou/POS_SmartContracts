@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.16;
+pragma solidity ^0.8.17;
 
-//import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "./POSFactory.sol";
 contract POS is POSFactory {
 
@@ -55,8 +52,5 @@ contract POS is POSFactory {
             token = GameCollection[Collection.PLANET_EARTH];
            return bytes(token.BaseURI).length > 0 ? string(abi.encodePacked(token.BaseURI,Strings.toString(_id), baseExtension)) : "";
     }
-
-    
-    
 
 }
