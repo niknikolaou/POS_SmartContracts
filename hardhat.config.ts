@@ -30,8 +30,11 @@ const chainIds = {
   mainnet: 1,
   "optimism-mainnet": 10,
   "polygon-mainnet": 137,
-  "polygon-mumbai": 80001,
+  polygonMumbai: 80001,
+  nova:42170,
 };
+
+const testPrivateKey: string = process.env.TEST_PRIVATE_KEY || "";
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
   let jsonRpcUrl: string;
@@ -42,13 +45,21 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
     case "bsc":
       jsonRpcUrl = "https://bsc-dataseed1.binance.org";
       break;
-    case "polygon-mumbai":
+    case "polygonMumbai":
       jsonRpcUrl = "https://rpc-mumbai.maticvigil.com/";
       break;
+      case "nova":
+        jsonRpcUrl = "https://arbitrum-nova.public.blastapi.io";
+        break;
     default:
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
   }
   return {
+    chainId: chainIds[chain],
+    url: jsonRpcUrl,
+    accounts: [`${testPrivateKey}`],
+  };
+ /* return {
     accounts: {
       count: 10,
       mnemonic,
@@ -56,7 +67,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
     },
     chainId: chainIds[chain],
     url: jsonRpcUrl,
-  };
+  };*/
 }
 
 const config: HardhatUserConfig = {
@@ -71,7 +82,18 @@ const config: HardhatUserConfig = {
       optimisticEthereum: process.env.OPTIMISM_API_KEY || "https://rpc-mumbai.maticvigil.com/",
       polygon: process.env.POLYGONSCAN_API_KEY || "",
       polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
+      "nova": process.env.NOVASCAN_API_KEY || "",
     },
+    customChains: [
+      {
+        network: "nova",
+        chainId: 42170,
+        urls: {
+          apiURL: "https://api-nova.arbiscan.io/api",
+          browserURL: "https://nova.arbiscan.io"
+        }
+      }
+    ]
   },
   gasReporter: {
     currency: "USD",
@@ -93,7 +115,8 @@ const config: HardhatUserConfig = {
     mainnet: getChainConfig("mainnet"),
     optimism: getChainConfig("optimism-mainnet"),
     "polygon-mainnet": getChainConfig("polygon-mainnet"),
-    "polygon-mumbai": getChainConfig("polygon-mumbai"),
+    polygonMumbai: getChainConfig("polygonMumbai"),
+    nova: getChainConfig("nova"),
   },
   paths: {
     artifacts: "./artifacts",
